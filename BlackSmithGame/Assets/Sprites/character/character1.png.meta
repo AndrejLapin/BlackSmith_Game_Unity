@@ -107,9 +107,9 @@ TextureImporter:
       name: character1_Idle
       rect:
         serializedVersion: 2
-        x: 2
+        x: 1
         y: 0
-        width: 13
+        width: 14
         height: 30
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
