@@ -6,18 +6,18 @@ public class Movement : MonoBehaviour
 {
     const string HORIZONTAL_AXIS_NAME = "Horizontal";
     const string VERTICAL_AXIS_NAME = "Vertical";
-    [SerializeField] float maxMoveSpeed = 20f;
+    [SerializeField] float maxMoveSpeed = 2.5f;
     [SerializeField] float acceleration = 0.8f;
     [SerializeField] GameObject body;
     float moveSpeed = 0f;
-    Rigidbody2D myRigidBody;
+    Rigidbody myRigidBody;
 
     bool lookingLeft = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        myRigidBody = GetComponent<Rigidbody2D>();
+        myRigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -67,10 +67,10 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            verticalVelocity = myRigidBody.velocity.y * acceleration * acceleration;
+            verticalVelocity = myRigidBody.velocity.z * acceleration * acceleration;
         }
 
-        Vector2 playerVelocity = new Vector2(horizontalVelocity, verticalVelocity);
+        Vector3 playerVelocity = new Vector3(horizontalVelocity, 0, verticalVelocity);
         myRigidBody.velocity = playerVelocity;
 
         if(horizontalVelocity > 0 && lookingLeft)
