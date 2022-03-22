@@ -10856,37 +10856,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
-    - target: {fileID: 6065733790456219723, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065733790456219723, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065733790456219723, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065733790456219723, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065733790456219723, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065733790456219723, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065733790456219724, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
-      propertyPath: orthographic size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6065733791054076910, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550550211090077885, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550550211090077885, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70d123d52a845234095fbe6ba44e954d, type: 3}
