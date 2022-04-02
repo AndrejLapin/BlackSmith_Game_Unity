@@ -16,7 +16,7 @@ public class MeshEditor : MonoBehaviour
     Vector2 lastUVOffset;
     [SerializeField] Vector2 uvScale = new Vector2(1.0f, 1.0f);
     Vector2 lasUVScale;
-    MeshFilter meshFilter = null;
+    Mesh myMesh = null;
 
     const float minScaleValue = 0.0000000001f;
 
@@ -26,21 +26,20 @@ public class MeshEditor : MonoBehaviour
         lasUVScale = uvScale;
         lastUVOffset = uvOffset;
 
-        meshFilter = GetComponent<MeshFilter>();
-        if(!meshFilter)
+        if(!GetComponent<MeshFilter>())
         {
             gameObject.AddComponent<MeshFilter>();
-            meshFilter = GetComponent<MeshFilter>();
         }
+        myMesh = GetComponent<MeshFilter>().mesh;
         if(!GetComponent<MeshRenderer>())
         {
             gameObject.AddComponent<MeshRenderer>();
         }
 
-        verticies = meshFilter.mesh.vertices;
-        tris = meshFilter.mesh.triangles;
-        UV = meshFilter.mesh.uv;
-        normals = meshFilter.mesh.normals;
+        verticies = myMesh.vertices;
+        tris = myMesh.triangles;
+        UV = myMesh.uv;
+        normals = myMesh.normals;
     }
 
     // Start is called before the first frame update
@@ -89,9 +88,9 @@ public class MeshEditor : MonoBehaviour
             }
         }
 
-        meshFilter.mesh.vertices = verticies;
-        meshFilter.mesh.triangles = tris;
-        meshFilter.mesh.uv = UV;
-        meshFilter.mesh.normals = normals;
+        myMesh.vertices = verticies;
+        myMesh.triangles = tris;
+        myMesh.uv = UV;
+        myMesh.normals = normals;
     }
 }
