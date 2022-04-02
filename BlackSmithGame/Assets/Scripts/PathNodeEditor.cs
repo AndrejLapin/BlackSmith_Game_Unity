@@ -32,9 +32,12 @@ public class PathNodeEditor : MonoBehaviour
     private void Awake()
     {
         // destroy this if its not a debug version
-
         myNode = GetComponent<PathNode>();
         myMesh = new Mesh();
+        if(!GetComponent<MeshFilter>())
+        {
+            gameObject.AddComponent<MeshFilter>();
+        }
         GetComponent<MeshFilter>().mesh = myMesh;
 
         AssignVertexOffsets();
