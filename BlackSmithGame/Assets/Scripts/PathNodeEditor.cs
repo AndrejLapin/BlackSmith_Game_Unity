@@ -6,12 +6,9 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class PathNodeEditor : MonoBehaviour
 {
-    // half transparent orange
-    static Color oragne = new Color(1f, 0.647f, 0f, 0.5f);
+    static Color oragne = new Color(1f, 0.647f, 0f, 0.5f); // half transparent orange
     static Color red = new Color(1f, 0f, 0f, 1f);
-
-    // this should be global
-    bool drawGizmos = true;
+    bool drawGizmos = true; // this should be global
     PathNode myNode;
     Mesh myMesh;
 
@@ -29,9 +26,14 @@ public class PathNodeEditor : MonoBehaviour
     Vector3 lastBottomLeft;
     Vector3 lastBottomRight;
 
+    PathNode topNeighbour = null;
+    PathNode bottomNeighbour = null;
+    PathNode leftNeighbour = null;
+    PathNode rightNeighbour = null;
+
     private void Awake()
     {
-        // destroy this if its not a debug version
+        //TODO: destroy this if its not a debug version
         myNode = GetComponent<PathNode>();
         myMesh = new Mesh();
         if(!GetComponent<MeshFilter>())
@@ -73,6 +75,8 @@ public class PathNodeEditor : MonoBehaviour
             CalculateVerticies();
 
             UpdateMesh();
+
+            UpdateNeighbourAssing();
         }
     }
 
@@ -113,5 +117,110 @@ public class PathNodeEditor : MonoBehaviour
     void UpdateMesh()
     {
         myMesh.vertices = new Vector3[] {topLeftVertex, topRightVertex, bottomLeftVertex, bottomRightVertex};
+    }
+
+    void UpdateNeighbourAssing()
+    {
+        if(topNeighbour != myNode.GetTopNeighbour())
+        {
+            //REMOVE LAST TOP BOTTOM NEIGHBOUR
+            if(topNeighbour)
+            {
+                topNeighbour.RemoveBottomNeighbour();
+            }
+
+            topNeighbour = myNode.GetTopNeighbour();
+            if(topNeighbour)
+            {
+                if(topNeighbour.GetBottomNeighbour() != myNode)
+                {
+                    topNeighbour.SetBottomNeighbour(ref myNode);
+                }
+
+                Vector3 middlePoint;            
+                middlePoint = GetMiddlePoint(topNeighbour.GetBottomLeft() + topNeighbour.transform.position, lastTopLeft + transform.position);
+
+                lastTopLeft += middlePoint;
+                myNode.SetTopLeft(lastTopLeft);
+                topNeighbour.SetBottomLeft(topNeighbour.GetBottomLeft() - middlePoint);
+
+                middlePoint = GetMiddlePoint(topNeighbour.GetBottomRight() + topNeighbour.transform.position, lastTopRight + transform.position);
+
+                lastTopRight += middlePoint;
+                myNode.SetTopRight(lastTopRight);
+                topNeighbour.SetBottomRight(topNeighbour.GetBottomRight() - middlePoint);
+
+                CalculateVerticies();
+
+                UpdateMesh();
+            }
+        }
+
+        if(bottomNeighbour != myNode.GetBottomNeighbour())
+        {
+            if(bottomNeighbour)
+            {
+                bottomNeighbour.RemoveTopNeighbour();
+            }
+
+            bottomNeighbour = myNode.GetBottomNeighbour();
+            if(bottomNeighbour && bottomNeighbour.GetTopNeighbour() != myNode)
+            {
+                bottomNeighbour.SetTopNeighbour(ref myNode);
+            }
+        }
+
+        if(leftNeighbour != myNode.GetLeftNeighbour())
+        {
+            if(leftNeighbour)
+            {
+                leftNeighbour.RemoveRightNeighbour();
+            }
+
+            leftNeighbour = myNode.GetLeftNeighbour();
+            if(leftNeighbour)
+            {
+                if(leftNeighbour.GetRightNeighbour() != myNode)
+                {
+                    leftNeighbour.SetRightNeighbour(ref myNode);
+                }
+
+                Vector3 middlePoint;            
+                middlePoint = GetMiddlePoint(leftNeighbour.GetTopRight() + leftNeighbour.transform.position, lastTopLeft + transform.position);
+
+                lastTopLeft += middlePoint;
+                myNode.SetTopLeft(lastTopLeft);
+                leftNeighbour.SetTopRight(leftNeighbour.GetTopRight() - middlePoint);
+
+                middlePoint = GetMiddlePoint(leftNeighbour.GetBottomRight() + leftNeighbour.transform.position, lastBottomLeft + transform.position);
+
+                lastBottomLeft += middlePoint;
+                myNode.SetBottomLeft(lastBottomLeft);
+                leftNeighbour.SetBottomRight(leftNeighbour.GetBottomRight() - middlePoint);
+
+                CalculateVerticies();
+
+                UpdateMesh();
+            }
+        }
+
+        if(rightNeighbour != myNode.GetRightNeighbour())
+        {
+            if(rightNeighbour)
+            {
+                rightNeighbour.RemoveLeftNeighbour();
+            }
+
+            rightNeighbour = myNode.GetRightNeighbour();
+            if(rightNeighbour && rightNeighbour.GetLeftNeighbour() != myNode)
+            {
+                rightNeighbour.SetLeftNeighbour(ref myNode);
+            }
+        }
+    }
+
+    public Vector3 GetMiddlePoint(Vector3 vectorA, Vector3 vectorB)
+    {
+        return (vectorA - vectorB) / 2;
     }
 }

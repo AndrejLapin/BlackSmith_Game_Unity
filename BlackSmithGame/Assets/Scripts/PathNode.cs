@@ -65,19 +65,84 @@ public class PathNode : MonoBehaviour
     {
         return topLeft;
     }
-
     public Vector3 GetTopRight()
     {
         return topRight;
     }
-
     public Vector3 GetBottomLeft()
     {
         return bottomLeft;
     }
-
     public Vector3 GetBottomRight()
     {
         return bottomRight;
+    }
+
+    public void SetTopLeft(Vector3 newPos)
+    {
+        topLeft = newPos;
+    }
+    public void SetTopRight(Vector3 newPos)
+    {
+        topRight = newPos;
+    }
+    public void SetBottomLeft(Vector3 newPos)
+    {
+        bottomLeft = newPos;
+    }
+    public void SetBottomRight(Vector3 newPos)
+    {
+        bottomRight = newPos;
+    }
+
+    public ref PathNode GetTopNeighbour()
+    {
+        return ref topNeighbour;
+    }
+    public ref PathNode GetBottomNeighbour()
+    {
+        return ref bottomNeighbour;
+    }
+    public ref PathNode GetLeftNeighbour()
+    {
+        return ref leftNeighbour;
+    }
+    public ref PathNode GetRightNeighbour()
+    {
+        return ref rightNeighbour;
+    }
+
+    public void SetTopNeighbour(ref PathNode neighbour)
+    {
+        topNeighbour = neighbour;
+    }
+    public void SetBottomNeighbour(ref PathNode neighbour)
+    {
+        bottomNeighbour = neighbour;
+    }
+    public void SetLeftNeighbour(ref PathNode neighbour)
+    {
+        leftNeighbour = neighbour;
+    }
+    public void SetRightNeighbour(ref PathNode neighbour)
+    {
+        rightNeighbour = neighbour;
+    }
+
+    public void RemoveTopNeighbour()
+    {
+        topNeighbour = null;
+    }
+    public void RemoveBottomNeighbour()
+    {
+        bottomNeighbour = null;
+    }
+    public void RemoveLeftNeighbour()
+    {
+        leftNeighbour = null;
+    }
+    public void RemoveRightNeighbour()
+    {
+        rightNeighbour = null;
     }
 }
