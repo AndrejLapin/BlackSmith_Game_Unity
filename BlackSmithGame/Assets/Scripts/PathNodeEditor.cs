@@ -21,6 +21,8 @@ public class PathNodeEditor : MonoBehaviour
 
     /* -------------------- */
 
+    Vector3 lastPosition;
+
     Vector3 lastTopLeft;
     Vector3 lastTopRight;
     Vector3 lastBottomLeft;
@@ -34,6 +36,7 @@ public class PathNodeEditor : MonoBehaviour
     private void Awake()
     {
         //TODO: destroy this if its not a debug version
+        lastPosition = transform.position;
         myNode = GetComponent<PathNode>();
         myMesh = new Mesh();
         if(!GetComponent<MeshFilter>())
@@ -65,6 +68,10 @@ public class PathNodeEditor : MonoBehaviour
             return;
         }
 
+        //if(!Selection.Contains(gameObject)) return; // use this later to optimise path node editor
+
+        bool updateNeighbours = false;
+
         if(lastTopLeft != myNode.GetTopLeft()
         || lastTopRight != myNode.GetTopRight()
         || lastBottomLeft != myNode.GetBottomLeft()
@@ -75,8 +82,24 @@ public class PathNodeEditor : MonoBehaviour
             CalculateVerticies();
 
             UpdateMesh();
+            // change this later
+            if(Selection.Contains(gameObject))
+            {
+                updateNeighbours = true;
+            }
+        }
 
-            UpdateNeighbourAssing();
+        if(lastPosition != transform.position)
+        {
+            updateNeighbours = true;
+            lastPosition = transform.position;
+        }
+
+        UpdateNeighbourAssing(ref updateNeighbours);
+
+        if(updateNeighbours)
+        {
+            UpdateNeighbours();
         }
     }
 
@@ -108,10 +131,10 @@ public class PathNodeEditor : MonoBehaviour
 
     void CalculateVerticies()
     {
-        topLeftVertex = new Vector3(lastTopLeft.x + transform.position.x, lastTopLeft.y + transform.position.y, lastTopLeft.z + transform.position.z);
-        topRightVertex = new Vector3(lastTopRight.x + transform.position.x, lastTopRight.y + transform.position.y, lastTopRight.z + transform.position.z);
-        bottomLeftVertex = new Vector3(lastBottomLeft.x + transform.position.x, lastBottomLeft.y + transform.position.y, lastBottomLeft.z + transform.position.z);
-        bottomRightVertex = new Vector3(lastBottomRight.x + transform.position.x, lastBottomRight.y + transform.position.y, lastBottomRight.z + transform.position.z);
+        topLeftVertex = lastTopLeft + transform.position;//new Vector3(lastTopLeft.x + transform.position.x, lastTopLeft.y + transform.position.y, lastTopLeft.z + transform.position.z);
+        topRightVertex = lastTopRight + transform.position;// new Vector3(lastTopRight.x + transform.position.x, lastTopRight.y + transform.position.y, lastTopRight.z + transform.position.z);
+        bottomLeftVertex = lastBottomLeft + transform.position;//new Vector3(lastBottomLeft.x + transform.position.x, lastBottomLeft.y + transform.position.y, lastBottomLeft.z + transform.position.z);
+        bottomRightVertex = lastBottomRight + transform.position;//new Vector3(lastBottomRight.x + transform.position.x, lastBottomRight.y + transform.position.y, lastBottomRight.z + transform.position.z);
     }
 
     void UpdateMesh()
@@ -119,7 +142,34 @@ public class PathNodeEditor : MonoBehaviour
         myMesh.vertices = new Vector3[] {topLeftVertex, topRightVertex, bottomLeftVertex, bottomRightVertex};
     }
 
-    void UpdateNeighbourAssing()
+    void UpdateNeighbours()
+    {
+        if(topNeighbour)
+        {
+            topNeighbour.SetBottomLeft(topLeftVertex - topNeighbour.transform.position);
+            topNeighbour.SetBottomRight(topRightVertex - topNeighbour.transform.position);
+        }
+
+        if(bottomNeighbour)
+        {
+            bottomNeighbour.SetTopLeft(bottomLeftVertex - bottomNeighbour.transform.position);
+            bottomNeighbour.SetTopRight(bottomRightVertex - bottomNeighbour.transform.position);
+        }
+
+        if(leftNeighbour)
+        {
+            leftNeighbour.SetTopRight(topLeftVertex - leftNeighbour.transform.position);
+            leftNeighbour.SetBottomRight(bottomLeftVertex - leftNeighbour.transform.position);
+        }
+
+        if(rightNeighbour)
+        {
+            rightNeighbour.SetTopLeft(topRightVertex - rightNeighbour.transform.position);
+            rightNeighbour.SetBottomLeft(bottomRightVertex - rightNeighbour.transform.position);
+        }
+    }
+
+    void UpdateNeighbourAssing(ref bool updateNeighbours)
     {
         if(topNeighbour != myNode.GetTopNeighbour())
         {
@@ -153,6 +203,9 @@ public class PathNodeEditor : MonoBehaviour
                 CalculateVerticies();
 
                 UpdateMesh();
+
+                updateNeighbours = true;
+                //UpdateNeighbours();
             }
         }
 
@@ -168,6 +221,9 @@ public class PathNodeEditor : MonoBehaviour
             {
                 bottomNeighbour.SetTopNeighbour(ref myNode);
             }
+
+            updateNeighbours = true;
+            //UpdateNeighbours();
         }
 
         if(leftNeighbour != myNode.GetLeftNeighbour())
@@ -201,6 +257,9 @@ public class PathNodeEditor : MonoBehaviour
                 CalculateVerticies();
 
                 UpdateMesh();
+
+                updateNeighbours = true;
+                //UpdateNeighbours();
             }
         }
 
@@ -216,6 +275,9 @@ public class PathNodeEditor : MonoBehaviour
             {
                 rightNeighbour.SetLeftNeighbour(ref myNode);
             }
+
+            updateNeighbours = true;
+            //UpdateNeighbours();
         }
     }
 
