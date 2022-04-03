@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8224752154245719640
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: wet_surface
+  m_Shader: {fileID: -6465566751694194690, guid: 46fa6f02095a2e242b4e226ab00c996a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_038ecb3078e14c4494e2c0e07f6e19aa_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 215e7ade82404454ebd7b3c72ce6b41d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_2d15281ad4a74853b06fa5d7f73d1b0b_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 79e3511c28091d54ea8d9cc011633b90, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_46947062ceee4aa198f880d4ecd1af8c_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 215e7ade82404454ebd7b3c72ce6b41d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_7e09068324f0408ea704c742221c926a_Texture_1:
+        m_Texture: {fileID: 2800000, guid: a90c2067182d7454182873f3e3699b1d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_e049bcf45c1a4d8998c9b6b6f9d2724c_Texture_1:
+        m_Texture: {fileID: 2800000, guid: a90c2067182d7454182873f3e3699b1d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueOffset: 0
+    - _Sizeofwaterspots: 1.23
+    - _TilseSize: 4.48
+    m_Colors: []
+  m_BuildTextureStacks: []
