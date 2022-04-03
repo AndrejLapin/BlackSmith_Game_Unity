@@ -68,7 +68,7 @@ public class PathNodeEditor : MonoBehaviour
             return;
         }
 
-        //if(!Selection.Contains(gameObject)) return; // use this later to optimise path node editor
+        if(!Selection.Contains(gameObject)) return; // use this later to optimise path node editor
 
         bool updateNeighbours = false;
 
@@ -77,16 +77,9 @@ public class PathNodeEditor : MonoBehaviour
         || lastBottomLeft != myNode.GetBottomLeft()
         || lastBottomRight != myNode.GetBottomLeft()) // I guess just move stuff to on gizmo draw and update mesh in OnGizmos draw, seems more efficient
         {
-            AssignVertexOffsets();
+            MeshUpdateWrapper();
 
-            CalculateVerticies();
-
-            UpdateMesh();
-            // change this later
-            if(Selection.Contains(gameObject))
-            {
-                updateNeighbours = true;
-            }
+            updateNeighbours = true;
         }
 
         if(lastPosition != transform.position)
@@ -131,10 +124,10 @@ public class PathNodeEditor : MonoBehaviour
 
     void CalculateVerticies()
     {
-        topLeftVertex = lastTopLeft + transform.position;//new Vector3(lastTopLeft.x + transform.position.x, lastTopLeft.y + transform.position.y, lastTopLeft.z + transform.position.z);
-        topRightVertex = lastTopRight + transform.position;// new Vector3(lastTopRight.x + transform.position.x, lastTopRight.y + transform.position.y, lastTopRight.z + transform.position.z);
-        bottomLeftVertex = lastBottomLeft + transform.position;//new Vector3(lastBottomLeft.x + transform.position.x, lastBottomLeft.y + transform.position.y, lastBottomLeft.z + transform.position.z);
-        bottomRightVertex = lastBottomRight + transform.position;//new Vector3(lastBottomRight.x + transform.position.x, lastBottomRight.y + transform.position.y, lastBottomRight.z + transform.position.z);
+        topLeftVertex = lastTopLeft + transform.position;
+        topRightVertex = lastTopRight + transform.position;
+        bottomLeftVertex = lastBottomLeft + transform.position;
+        bottomRightVertex = lastBottomRight + transform.position;
     }
 
     void UpdateMesh()
@@ -148,24 +141,85 @@ public class PathNodeEditor : MonoBehaviour
         {
             topNeighbour.SetBottomLeft(topLeftVertex - topNeighbour.transform.position);
             topNeighbour.SetBottomRight(topRightVertex - topNeighbour.transform.position);
+            topNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+
+            PathNode rNeighbour = topNeighbour.GetRightNeighbour();
+            if(rNeighbour)
+            {
+                rNeighbour.SetBottomLeft(topLeftVertex - topNeighbour.transform.position);
+                rNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
+
+            PathNode lNeighbour = topNeighbour.GetLeftNeighbour();
+            if(lNeighbour)
+            {
+                lNeighbour.SetBottomRight(topRightVertex - topNeighbour.transform.position);
+                lNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
         }
 
         if(bottomNeighbour)
         {
             bottomNeighbour.SetTopLeft(bottomLeftVertex - bottomNeighbour.transform.position);
             bottomNeighbour.SetTopRight(bottomRightVertex - bottomNeighbour.transform.position);
+            bottomNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+
+            PathNode rNeighbour = bottomNeighbour.GetRightNeighbour();
+            if(rNeighbour)
+            {
+                rNeighbour.SetTopLeft(bottomLeftVertex - bottomNeighbour.transform.position);
+                rNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
+
+            PathNode lNeighbour = topNeighbour.GetLeftNeighbour();
+            if(lNeighbour)
+            {
+                lNeighbour.SetTopRight(bottomRightVertex - bottomNeighbour.transform.position);
+                lNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
+
         }
 
         if(leftNeighbour)
         {
             leftNeighbour.SetTopRight(topLeftVertex - leftNeighbour.transform.position);
             leftNeighbour.SetBottomRight(bottomLeftVertex - leftNeighbour.transform.position);
+            leftNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+
+            PathNode tNeighbour = leftNeighbour.GetTopNeighbour();
+            if(tNeighbour)
+            {
+                tNeighbour.SetBottomRight(bottomLeftVertex - leftNeighbour.transform.position);
+                tNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
+
+            PathNode bNeighbour = leftNeighbour.GetBottomNeighbour();
+            if(bNeighbour)
+            {
+                bNeighbour.SetTopRight(topLeftVertex - leftNeighbour.transform.position);
+                bNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
         }
 
         if(rightNeighbour)
         {
             rightNeighbour.SetTopLeft(topRightVertex - rightNeighbour.transform.position);
             rightNeighbour.SetBottomLeft(bottomRightVertex - rightNeighbour.transform.position);
+            rightNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+
+            PathNode tNeighbour = leftNeighbour.GetTopNeighbour();
+            if(tNeighbour)
+            {
+                tNeighbour.SetBottomLeft(bottomRightVertex - rightNeighbour.transform.position);
+                tNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
+
+            PathNode bNeighbour = leftNeighbour.GetBottomNeighbour();
+            if(bNeighbour)
+            {
+                bNeighbour.SetTopLeft(topRightVertex - rightNeighbour.transform.position);
+                bNeighbour.GetComponent<PathNodeEditor>().MeshUpdateWrapper();
+            }
         }
     }
 
@@ -279,6 +333,15 @@ public class PathNodeEditor : MonoBehaviour
             updateNeighbours = true;
             //UpdateNeighbours();
         }
+    }
+
+    public void MeshUpdateWrapper()
+    {
+        AssignVertexOffsets();
+
+        CalculateVerticies();
+
+        UpdateMesh();
     }
 
     public Vector3 GetMiddlePoint(Vector3 vectorA, Vector3 vectorB)
