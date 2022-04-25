@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    const string HORIZONTAL_AXIS_NAME = "Horizontal";
+    const string HORIZONTAL_AXIS_NAME = "Horizontal"; // probably should be taking this name from settings
     const string VERTICAL_AXIS_NAME = "Vertical";
+    const string ANIMATOR_RUNNING = "running";
+
     [SerializeField] float maxMoveSpeed = 2.5f;
     [SerializeField] float acceleration = 0.8f;
-    [SerializeField] GameObject body;
+    [SerializeField] Animator characterAnimator;
+    [SerializeField] GameObject characterBody;
+    [SerializeField] float bodyRotationSpeed = 0.5f;
+
+    [SerializeField] float targetAngleY;
+    [SerializeField] float currentAngleY;
+    [SerializeField] float interpolationAngle;
     float moveSpeed = 0f;
     Rigidbody myRigidBody;
 
@@ -43,11 +51,13 @@ public class Movement : MonoBehaviour
 
         if(hypothenuse != 0)
         {
+            characterAnimator.SetBool(ANIMATOR_RUNNING, true);
             moveSpeed += acceleration;
             if(moveSpeed > maxMoveSpeed) moveSpeed = maxMoveSpeed;
         }
         else
         {
+            characterAnimator.SetBool(ANIMATOR_RUNNING, false);
             moveSpeed -= acceleration;
             if(moveSpeed < 0) moveSpeed = 0;
         }
@@ -71,17 +81,24 @@ public class Movement : MonoBehaviour
         }
 
         Vector3 playerVelocity = new Vector3(horizontalVelocity, 0, verticalVelocity);
+        if(hypothenuse != 0)
+        {
+            RotateBody(playerVelocity);
+        }
         myRigidBody.velocity = playerVelocity;
+    }
 
-        if(horizontalVelocity > 0 && lookingLeft)
-        {
-            lookingLeft = false;
-            body.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-        }
-        else if(horizontalVelocity < 0 && !lookingLeft)
-        {
-            lookingLeft = true;
-            body.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        }
+    void RotateBody(Vector3 playerVelocity)
+    {
+        float rotationTargetAngle = Vector3.Angle(Vector3.forward, playerVelocity) * Mathf.Sign(playerVelocity.x);
+        characterBody.transform.rotation = Quaternion.Euler(0, rotationTargetAngle, 0);
+        // targetAngleY = rotationTargetAngle;
+        // currentAngleY = characterBody.transform.rotation.eulerAngles.y;
+        // if(characterBody.transform.rotation.eulerAngles.y != rotationTargetAngle)
+        // {
+        //     float interpolatedAngle =  Mathf.Lerp(characterBody.transform.rotation.eulerAngles.y, rotationTargetAngle, bodyRotationSpeed * Time.deltaTime);
+        //     interpolationAngle = interpolatedAngle;
+        //     characterBody.transform.rotation = Quaternion.Euler(0, interpolatedAngle * Mathf.Sign(playerVelocity.x), 0);
+        // }
     }
 }
