@@ -1050,7 +1050,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Strength",
     "m_StageCapability": 3,
-    "m_Value": 1.3200000524520875,
+    "m_Value": 0.36000001430511477,
     "m_DefaultValue": 1.0,
     "m_Labels": []
 }
@@ -1264,8 +1264,8 @@
     "m_ShaderOutputName": "Offset",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": -5.800000190734863,
-        "y": 0.05999999865889549
+        "x": -9.149999618530274,
+        "y": 0.8299999833106995
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -1307,7 +1307,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Scale",
     "m_StageCapability": 3,
-    "m_Value": 28.239999771118165,
+    "m_Value": 26.0,
     "m_DefaultValue": 500.0,
     "m_Labels": []
 }
@@ -1690,7 +1690,7 @@
     "m_ShaderOutputName": "Offset",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.0,
+        "x": 0.8100000023841858,
         "y": 0.0
     },
     "m_DefaultValue": {
