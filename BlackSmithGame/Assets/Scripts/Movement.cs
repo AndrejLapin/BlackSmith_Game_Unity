@@ -13,6 +13,7 @@ public class Movement : MonoBehaviour
     [SerializeField] Animator characterAnimator;
     [SerializeField] GameObject characterBody;
     [SerializeField] float bodyRotationSpeed = 0.5f;
+    [SerializeField] Camera myCamera;
 
     [SerializeField] float targetAngleY;
     [SerializeField] float currentAngleY;
@@ -38,6 +39,8 @@ public class Movement : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+
+        Debug.Log(myCamera.transform.rotation.eulerAngles.y);
     }
 
     void Move()
@@ -79,9 +82,13 @@ public class Movement : MonoBehaviour
         {
             verticalVelocity = myRigidBody.velocity.z * acceleration * acceleration;
         }
+        //Vector3 cameraVector = new Vector3(Mathf.Sin(Mathf.Deg2Rad * myCamera.transform.rotation.eulerAngles.y), 0, Mathf.Cos(Mathf.Deg2Rad * myCamera.transform.rotation.eulerAngles.y));
+        //Debug.Log(Vector3.Normalize(cameraVector));
 
+        //Vector3 playerVelocity1 = new Vector3(horizontalVelocity, 0, verticalVelocity);
+        //Vector3 playerVelocity = Vector3.Scale(cameraVector, playerVelocity1);
         Vector3 playerVelocity = new Vector3(horizontalVelocity, 0, verticalVelocity);
-        if(hypothenuse != 0)
+        if (hypothenuse != 0)
         {
             RotateBody(playerVelocity);
         }
