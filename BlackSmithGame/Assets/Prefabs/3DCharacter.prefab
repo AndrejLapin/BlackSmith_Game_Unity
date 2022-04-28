@@ -145,10 +145,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMoveSpeed: 2.5
-  acceleration: 0.8
+  acceleration: 40
   characterAnimator: {fileID: 5173639414791741639}
   characterBody: {fileID: 1902640940830597127}
-  bodyRotationSpeed: 90
+  bodyRotationSpeed: 10
+  myCamera: {fileID: 1001326388902317472}
   targetAngleY: 0
   currentAngleY: 0
   interpolationAngle: 0

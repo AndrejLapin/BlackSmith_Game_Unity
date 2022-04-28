@@ -40,7 +40,7 @@ public class Movement : MonoBehaviour
     {
         Move();
 
-        Debug.Log(myCamera.transform.rotation.eulerAngles.y);
+        //Debug.Log(myCamera.transform.rotation.eulerAngles.y);
     }
 
     void Move()
@@ -49,45 +49,46 @@ public class Movement : MonoBehaviour
         float verticalThrow = Input.GetAxisRaw(VERTICAL_AXIS_NAME);
         float hypothenuse = Mathf.Sqrt(horizontalThrow * horizontalThrow + verticalThrow * verticalThrow);
 
-        float horizontalVelocity;
-        float verticalVelocity;
+        float horizontalVelocity = 0;
+        float verticalVelocity = 0;
 
         if(hypothenuse != 0)
         {
             characterAnimator.SetBool(ANIMATOR_RUNNING, true);
-            moveSpeed += acceleration;
+            moveSpeed += acceleration * Time.deltaTime;
             if(moveSpeed > maxMoveSpeed) moveSpeed = maxMoveSpeed;
         }
         else
         {
             characterAnimator.SetBool(ANIMATOR_RUNNING, false);
-            moveSpeed -= acceleration;
+            moveSpeed -= acceleration * Time.deltaTime;
             if(moveSpeed < 0) moveSpeed = 0;
         }
         
         if(horizontalThrow != 0)
         {
-            horizontalVelocity = horizontalThrow / hypothenuse * moveSpeed;
+            horizontalVelocity = horizontalThrow / hypothenuse * moveSpeed ;
         }
-        else
-        {
-            horizontalVelocity = myRigidBody.velocity.x * acceleration * acceleration;
-        }
+        // else // to perform a little drift
+        // {
+        //     horizontalVelocity = myRigidBody.velocity.x * acceleration * acceleration;
+        // }
 
         if(verticalThrow != 0)
         {
             verticalVelocity = verticalThrow / hypothenuse * moveSpeed;
         }
-        else
-        {
-            verticalVelocity = myRigidBody.velocity.z * acceleration * acceleration;
-        }
-        //Vector3 cameraVector = new Vector3(Mathf.Sin(Mathf.Deg2Rad * myCamera.transform.rotation.eulerAngles.y), 0, Mathf.Cos(Mathf.Deg2Rad * myCamera.transform.rotation.eulerAngles.y));
-        //Debug.Log(Vector3.Normalize(cameraVector));
+        // else // to perform a little drift
+        // {
+        //     verticalVelocity = myRigidBody.velocity.z * acceleration * acceleration;
+        // }
 
-        //Vector3 playerVelocity1 = new Vector3(horizontalVelocity, 0, verticalVelocity);
-        //Vector3 playerVelocity = Vector3.Scale(cameraVector, playerVelocity1);
+        // calculating player velocity vector
         Vector3 playerVelocity = new Vector3(horizontalVelocity, 0, verticalVelocity);
+        // rotating velocity vector by camera rotation
+        // needed so if the camera faces other way controls behave naturally
+        playerVelocity = Quaternion.Euler(0, myCamera.transform.rotation.eulerAngles.y, 0 ) * playerVelocity;
+
         if (hypothenuse != 0)
         {
             RotateBody(playerVelocity);
@@ -99,6 +100,8 @@ public class Movement : MonoBehaviour
     {
         float rotationTargetAngle = Vector3.Angle(Vector3.forward, playerVelocity) * Mathf.Sign(playerVelocity.x);
         characterBody.transform.rotation = Quaternion.Euler(0, rotationTargetAngle, 0);
+
+        // rotation interpolation implementation
         // targetAngleY = rotationTargetAngle;
         // currentAngleY = characterBody.transform.rotation.eulerAngles.y;
         // if(characterBody.transform.rotation.eulerAngles.y != rotationTargetAngle)
