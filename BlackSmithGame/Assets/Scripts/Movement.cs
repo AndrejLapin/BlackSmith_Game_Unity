@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    const string HORIZONTAL_AXIS_NAME = "Horizontal"; // probably should be taking this name from settings
+    enum CharacterState
+    {
+        Idle = 0,
+        Moving = 1,
+        Dodging = 2
+    }
+
+    const string HORIZONTAL_AXIS_NAME = "Horizontal";
     const string VERTICAL_AXIS_NAME = "Vertical";
+    const string DODGE_INPUT_NAME = "Dodge";
+
     const string ANIMATOR_RUNNING = "running";
+    const string ANIMATOR_DODGE = "dodge";
 
     [SerializeField] float maxMoveSpeed = 2.5f;
     [SerializeField] float acceleration = 0.8f;
@@ -14,10 +24,9 @@ public class Movement : MonoBehaviour
     [SerializeField] GameObject characterBody;
     [SerializeField] float bodyRotationSpeed = 0.5f;
     [SerializeField] Camera myCamera;
+    [SerializeField] bool dodgeToMouse = false;
 
-    [SerializeField] float targetAngleY;
-    [SerializeField] float currentAngleY;
-    [SerializeField] float interpolationAngle;
+    CharacterState myState;
     float moveSpeed = 0f;
     Rigidbody myRigidBody;
 
@@ -27,6 +36,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         myRigidBody = GetComponent<Rigidbody>();
+        myState = CharacterState.Idle;
     }
 
     // Update is called once per frame
@@ -38,9 +48,15 @@ public class Movement : MonoBehaviour
     // framerate independant update
     void FixedUpdate()
     {
-        Move();
+        if(myState == CharacterState.Idle || myState == CharacterState.Moving)
+        {
+            Move();
+            Dodge();
+        }
+        else if(myState == CharacterState.Dodging)
+        {
 
-        //Debug.Log(myCamera.transform.rotation.eulerAngles.y);
+        }
     }
 
     void Move()
@@ -54,12 +70,14 @@ public class Movement : MonoBehaviour
 
         if(hypothenuse != 0)
         {
+            myState = CharacterState.Moving;
             characterAnimator.SetBool(ANIMATOR_RUNNING, true);
             moveSpeed += acceleration * Time.deltaTime;
             if(moveSpeed > maxMoveSpeed) moveSpeed = maxMoveSpeed;
         }
         else
         {
+            myState = CharacterState.Idle;
             characterAnimator.SetBool(ANIMATOR_RUNNING, false);
             moveSpeed -= acceleration * Time.deltaTime;
             if(moveSpeed < 0) moveSpeed = 0;
@@ -100,15 +118,14 @@ public class Movement : MonoBehaviour
     {
         float rotationTargetAngle = Vector3.Angle(Vector3.forward, playerVelocity) * Mathf.Sign(playerVelocity.x);
         characterBody.transform.rotation = Quaternion.Euler(0, rotationTargetAngle, 0);
+    }
 
-        // rotation interpolation implementation
-        // targetAngleY = rotationTargetAngle;
-        // currentAngleY = characterBody.transform.rotation.eulerAngles.y;
-        // if(characterBody.transform.rotation.eulerAngles.y != rotationTargetAngle)
-        // {
-        //     float interpolatedAngle =  Mathf.Lerp(characterBody.transform.rotation.eulerAngles.y, rotationTargetAngle, bodyRotationSpeed * Time.deltaTime);
-        //     interpolationAngle = interpolatedAngle;
-        //     characterBody.transform.rotation = Quaternion.Euler(0, interpolatedAngle * Mathf.Sign(playerVelocity.x), 0);
-        // }
+    void Dodge()
+    {
+        if(Input.GetButtonDown(DODGE_INPUT_NAME))
+        {
+            //myState = Dodging;
+            characterAnimator.SetTrigger(ANIMATOR_DODGE);
+        }
     }
 }
