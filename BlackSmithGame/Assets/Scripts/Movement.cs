@@ -128,4 +128,9 @@ public class Movement : MonoBehaviour
             characterAnimator.SetTrigger(ANIMATOR_DODGE);
         }
     }
+
+    public void AnimationEnded(string parameter)
+    {
+        
+    }
 }
