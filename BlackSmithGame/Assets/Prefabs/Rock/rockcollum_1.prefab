@@ -86,7 +86,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: d4bb9d269fe9aac409750f2f6db27d99, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 35ef58b988bb2e64080f925fd73e06fe, type: 2}
+      objectReference: {fileID: 2100000, guid: 60dcd95b6c90a514aa0ede5b66e29520, type: 2}
     - target: {fileID: 919132149155446097, guid: d4bb9d269fe9aac409750f2f6db27d99, type: 3}
       propertyPath: m_Name
       value: rockcollum_1
