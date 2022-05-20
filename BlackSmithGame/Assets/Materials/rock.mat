@@ -58,7 +58,9 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _Sizeofwaterspots: 0.8
     - _TilseSize: 0.47
-    - _normal_str: -0.38
+    - _normal_str: 0.67
     - _offset: 0.15
+    - _wetSTR: 0.61
+    - _wetness: 8.8
     m_Colors: []
   m_BuildTextureStacks: []

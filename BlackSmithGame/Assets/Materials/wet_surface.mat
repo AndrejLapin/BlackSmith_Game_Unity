@@ -56,7 +56,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Sizeofwaterspots: 0
+    - _Sizeofwaterspots: 1.35
     - _TilseSize: 0.3
     m_Colors: []
   m_BuildTextureStacks: []
