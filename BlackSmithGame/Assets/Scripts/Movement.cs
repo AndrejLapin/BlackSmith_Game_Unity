@@ -33,8 +33,6 @@ public class Movement : MonoBehaviour, AnimationEventHandler
     float moveSpeed = 0f;
     Rigidbody myRigidBody;
 
-    bool lookingLeft = true;
-
     // Start is called before the first frame update
     void Start()
     {
