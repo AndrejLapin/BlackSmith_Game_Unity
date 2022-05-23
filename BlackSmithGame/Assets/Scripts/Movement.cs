@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, AnimationEventHandler
 {
+    // put in a seperate file
     enum CharacterState
     {
         Idle = 0,
@@ -11,6 +12,7 @@ public class Movement : MonoBehaviour
         Dodging = 2
     }
 
+    // put in a seperate file
     const string HORIZONTAL_AXIS_NAME = "Horizontal";
     const string VERTICAL_AXIS_NAME = "Vertical";
     const string DODGE_INPUT_NAME = "Dodge";
@@ -25,6 +27,7 @@ public class Movement : MonoBehaviour
     [SerializeField] float bodyRotationSpeed = 0.5f;
     [SerializeField] Camera myCamera;
     [SerializeField] bool dodgeToMouse = false;
+    [SerializeField] float dodgeVelocity = 1.5f;
 
     CharacterState myState;
     float moveSpeed = 0f;
@@ -42,12 +45,6 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    // framerate independant update
-    void FixedUpdate()
-    {
         if(myState == CharacterState.Idle || myState == CharacterState.Moving)
         {
             Move();
@@ -55,8 +52,14 @@ public class Movement : MonoBehaviour
         }
         else if(myState == CharacterState.Dodging)
         {
-
+            //need to turn off movement
         }
+    }
+
+    // framerate independant update
+    void FixedUpdate()
+    {
+        
     }
 
     void Move()
@@ -124,13 +127,34 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetButtonDown(DODGE_INPUT_NAME))
         {
-            //myState = Dodging;
+            myState = CharacterState.Dodging;
             characterAnimator.SetTrigger(ANIMATOR_DODGE);
+            //characterAnimator.SetBool(ANIMATOR_RUNNING, false);
+
+            StopMovement();
+
+            if(!dodgeToMouse)
+            {
+                // get character rotation
+                Vector3 playerVelocity = new Vector3(0, 0, dodgeVelocity);
+                // aplly dodge velocity
+                myRigidBody.velocity = Quaternion.Euler(0,  characterBody.transform.rotation.eulerAngles.y, 0 ) * playerVelocity;
+            }
         }
+    }
+
+    void StopMovement()
+    {
+        myRigidBody.velocity = new Vector3(0, 0, 0);
     }
 
     public void AnimationEnded(string parameter)
     {
-        
+        Debug.Log(parameter);
+        if(parameter == ANIMATOR_DODGE)
+        {
+            myState = CharacterState.Idle;
+        }
     }
+    
 }
