@@ -60,7 +60,7 @@ Material:
     - _TilseSize: 0.47
     - _normal_str: 0.67
     - _offset: 0.15
-    - _wetSTR: 0.61
+    - _wetSTR: 0.87
     - _wetness: 8.8
     m_Colors: []
   m_BuildTextureStacks: []
